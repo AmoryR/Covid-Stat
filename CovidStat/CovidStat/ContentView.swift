@@ -77,189 +77,365 @@ struct ContentView: View {
     var graphs = ["Infected", "Deaths", "Recovered"]
 
     @State private var selectedGraph = 0
-
-
+    @State var showingAbout = false
+    @State var showingCredits = false
+    
     var body: some View {
+        
         VStack {
             
             // Header
             ZStack {
                 
-                // Virus
+                // Image
                 Image("virus")
                 
-                
+                // Text
                 VStack(alignment: .leading) {
                     Text("Stay safe at home")
                         .font(.title)
                         .foregroundColor(Color.white)
-                    
-                    Button("About Covid-19", action: {
-                        print("Launch modal...")
-                    })
+
+                    Button(action: {
+                        self.showingAbout.toggle()
+                    }) {
+                        Text("About Covid-19")
+                            .foregroundColor(Color.orange)
+                    }
+                    .sheet(isPresented: self.$showingAbout) {
+                            About()
+                    }
                 }
             }
-            .frame(height: 200)
-            .background(
-            LinearGradient(gradient: Gradient(colors: [
+            .frame(width: UIScreen.main.bounds.width, height: 200)
+            .background(LinearGradient(gradient: Gradient(colors: [
                 Color(red: 23/255, green: 74/255, blue: 136/255),
-                Color(red: 41/255, green: 116/255, blue: 201/255)            ]), startPoint: .leading, endPoint: .trailing)
+                Color(red: 41/255, green: 116/255, blue: 201/255)]), startPoint: .leading, endPoint: .trailing)
             )
             
-            // Content
-            ScrollView {
-                
-                
-                VStack(spacing: 16) {
-                    // Place
-                    VStack {
-                        
-                        HStack {
-
-                            Text("Select a place")
-                                .fontWeight(.bold)
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                            
-                        Text("By default : US")
-                    }
-
-                    // Case Update
-                    VStack {
-                        
-                        
-                        HStack {
-                            VStack {
-                                Text("Case Update")
-                                    .fontWeight(.bold)
-
-//                                Text("Newest update \(self.vm.lastData)")
-//                                    .font(.callout)
-//                                    .foregroundColor(Color.gray)
-                            }
-                            
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                        
-                        
-                        HStack {
-                            
-                            VStack {
-                                Text("\(self.vm.infected)")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color.orange)
-                                Text("Infected")
-                                    .font(.caption)
-                                    .foregroundColor(Color.gray)
-                            }
-                            .frame(width: 100)
-                            
-                            VStack {
-                                Text("\(self.vm.deaths)")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color.red)
-                                Text("Deaths")
-                                    .font(.caption)
-                                    .foregroundColor(Color.gray)
-                            }
-                            .frame(width: 100)
-                            
-                            VStack {
-                                Text("\(self.vm.recovered)")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color.green)
-                                Text("Recovered")
-                                .font(.caption)
-                                .foregroundColor(Color.gray)
-                            }
-                            .frame(width: 100)
-                            
-                        }
-                        .frame(width: UIScreen.main.bounds.width, height: 75)
-                        .background(Color.white)
-                        .cornerRadius(8)
-                        .clipped()
-                        .shadow(radius: 4, x: 0, y: 4)
-                    }
-
-                    // Virus evolution
-                    VStack {
-                        
-                        HStack {
-                            VStack {
-                                Text("Virus evolution")
-                                    .fontWeight(.bold)
-                                
-//                                Text("From January to today")
-//                                    .font(.callout)
-//                                    .foregroundColor(Color.gray)
-                            }
-                            
-                            Spacer()
-                        }
-                        .padding(.leading)
-                        .padding(.trailing)
-                        
-                        Picker(selection: $selectedGraph, label: Text("Strength")) {
-                            ForEach(0 ..< graphs.count) {
-                                Text(self.graphs[$0])
-
-                            }
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .padding(.horizontal)
-                        
-                        
-                        HStack {
-                            Text("Draw : \(self.graphs[self.selectedGraph])")
-//                            if !self.vm.dataSet.isEmpty {
-//                                ScrollView(.horizontal) {
-//                                    HStack(alignment: .bottom, spacing: 4) {
-//                                        ForEach(vm.dataSet, id: \.self) { (day: DayData) in
-//
-//                                            HStack {
-//                                                Spacer()
-//                                            }.frame(width: 8, height: (CGFloat(day.deaths) / CGFloat(self.vm.max)) * 150).background(Color.red)
-//
-//                                        }
-//                                    }
-//                                }
-//                            }
-                        }
-                        .frame(width: UIScreen.main.bounds.width, height: 200)
-                        .background(Color.white)
-                        .cornerRadius(8)
-                        .clipped()
-                        .shadow(radius: 4, x: 0, y: 4)
-                    }
-                    
-                    // Credit
-                    HStack {
-                        Button("Credits", action: {
-                            print("Show credits")
-                        })
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                
+            // Place selector
+            VStack {
+                // Head text
+                HStack {
+                    Text("Select a place")
+                        .fontWeight(.bold)
+                    Spacer()
                 }
-            }
+                
+                // Selector
+                // Like in a form
+                
+            }.padding()
             
-            // Spacer
+            // Case update
+            VStack {
+                
+                // Head text
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Case update")
+                            .fontWeight(.bold)
+                        Text("Newest update")
+                            .font(.callout)
+                            .foregroundColor(Color.gray)
+                    }
+                    Spacer()
+                }
+                
+                // Case digits
+                HStack {
+                    Spacer()
+                    
+                    // Infected
+                    VStack {
+                        Text("\(self.vm.infected)")
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.orange)
+                        Text("Infected")
+                            .font(.caption)
+                            .foregroundColor(Color.gray)
+                    }
+                    .frame(width: 100)
+
+                    // Deaths
+                    VStack {
+                        Text("\(self.vm.deaths)")
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.red)
+                        Text("Deaths")
+                            .font(.caption)
+                            .foregroundColor(Color.gray)
+                    }
+                    .frame(width: 100)
+
+                    // Recovered
+                    VStack {
+                        Text("\(self.vm.recovered)")
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.green)
+                        Text("Recovered")
+                        .font(.caption)
+                        .foregroundColor(Color.gray)
+                    }
+                    .frame(width: 100)
+                    
+                    Spacer()
+                }
+                .frame(height: 75)
+                .background(Color.white)
+                .cornerRadius(8)
+                .clipped()
+                .shadow(radius: 4, x: 0, y: 4)
+                
+                
+            }.padding()
+            
+            // Virus evolution
+            VStack {
+                
+                // Head text
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Virus evolution")
+                            .fontWeight(.bold)
+                        Text("From january to today")
+                            .font(.callout)
+                            .foregroundColor(Color.gray)
+                    }
+                    Spacer()
+                }
+                
+                // Picker
+                Picker(selection: $selectedGraph, label: Text("Strength")) {
+                    ForEach(0 ..< graphs.count) {
+                        Text(self.graphs[$0])
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                
+                // Graph
+                HStack {
+                    Spacer()
+                    Text("Graph for \(self.graphs[self.selectedGraph])")
+                    Spacer()
+
+                }
+                .frame(height: 75)
+                .background(Color.white)
+                .cornerRadius(8)
+                .clipped()
+                .shadow(radius: 4, x: 0, y: 4)
+                
+                
+            }.padding()
+            
+            // Credits
+            HStack {
+                
+                Button("Credits", action: {
+                    self.showingCredits.toggle()
+                })
+                .sheet(isPresented: self.$showingCredits) {
+                        Credits()
+                }
+
+                Spacer()
+                
+            }.padding(.horizontal)
+            
             Spacer()
-            
         }
         .frame(maxWidth: UIScreen.main.bounds.width)
         .edgesIgnoringSafeArea(.all)
         // I can't make it light
         .statusBar(hidden: true)
-        
-        //.edgesIgnoringSafeArea(.top) side problem
-//        .background(Color.gray)
     }
+
+//    var body: some View {
+//        VStack {
+//
+//            // Header
+//            ZStack {
+//
+//                // Virus
+//                Image("virus")
+//
+//
+//                VStack(alignment: .leading) {
+//                    Text("Stay safe at home")
+//                        .font(.title)
+//                        .foregroundColor(Color.white)
+//
+//                    Button("About Covid-19", action: {
+//                        self.showingAbout.toggle()
+//                    })
+//                    .sheet(isPresented: self.$showingAbout) {
+//                            About()
+//                    }
+//                }
+//            }
+//            .frame(height: 200)
+//            .background(
+//            LinearGradient(gradient: Gradient(colors: [
+//                Color(red: 23/255, green: 74/255, blue: 136/255),
+//                Color(red: 41/255, green: 116/255, blue: 201/255)            ]), startPoint: .leading, endPoint: .trailing)
+//            )
+//
+//            // Content
+//            ScrollView {
+//
+//
+//                VStack(spacing: 16) {
+//                    // Place
+//                    VStack {
+//
+//                        HStack {
+//
+//                            Text("Select a place")
+//                                .fontWeight(.bold)
+//                            Spacer()
+//                        }
+//                        .padding(.horizontal)
+//
+//                        Text("By default : US")
+//                    }
+//
+//                    // Case Update
+//                    VStack {
+//
+//
+//                        HStack {
+//                            VStack {
+//                                Text("Case Update")
+//                                    .fontWeight(.bold)
+//
+////                                Text("Newest update \(self.vm.lastData)")
+////                                    .font(.callout)
+////                                    .foregroundColor(Color.gray)
+//                            }
+//
+//                            Spacer()
+//                        }
+//                        .padding(.horizontal)
+//
+//
+//                        HStack {
+//
+//                            VStack {
+//                                Text("\(self.vm.infected)")
+//                                    .fontWeight(.bold)
+//                                    .foregroundColor(Color.orange)
+//                                Text("Infected")
+//                                    .font(.caption)
+//                                    .foregroundColor(Color.gray)
+//                            }
+//                            .frame(width: 100)
+//
+//                            VStack {
+//                                Text("\(self.vm.deaths)")
+//                                    .fontWeight(.bold)
+//                                    .foregroundColor(Color.red)
+//                                Text("Deaths")
+//                                    .font(.caption)
+//                                    .foregroundColor(Color.gray)
+//                            }
+//                            .frame(width: 100)
+//
+//                            VStack {
+//                                Text("\(self.vm.recovered)")
+//                                    .fontWeight(.bold)
+//                                    .foregroundColor(Color.green)
+//                                Text("Recovered")
+//                                .font(.caption)
+//                                .foregroundColor(Color.gray)
+//                            }
+//                            .frame(width: 100)
+//
+//                        }
+//                        .frame(width: UIScreen.main.bounds.width, height: 75)
+//                        .background(Color.white)
+//                        .cornerRadius(8)
+//                        .clipped()
+//                        .shadow(radius: 4, x: 0, y: 4)
+//                    }
+//
+//                    // Virus evolution
+//                    VStack {
+//
+//                        HStack {
+//                            VStack {
+//                                Text("Virus evolution")
+//                                    .fontWeight(.bold)
+//
+////                                Text("From January to today")
+////                                    .font(.callout)
+////                                    .foregroundColor(Color.gray)
+//                            }
+//
+//                            Spacer()
+//                        }
+//                        .padding(.leading)
+//                        .padding(.trailing)
+//
+//                        Picker(selection: $selectedGraph, label: Text("Strength")) {
+//                            ForEach(0 ..< graphs.count) {
+//                                Text(self.graphs[$0])
+//
+//                            }
+//                        }
+//                        .pickerStyle(SegmentedPickerStyle())
+//                        .padding(.horizontal)
+//
+//
+//                        HStack {
+//                            Text("Draw : \(self.graphs[self.selectedGraph])")
+////                            if !self.vm.dataSet.isEmpty {
+////                                ScrollView(.horizontal) {
+////                                    HStack(alignment: .bottom, spacing: 4) {
+////                                        ForEach(vm.dataSet, id: \.self) { (day: DayData) in
+////
+////                                            HStack {
+////                                                Spacer()
+////                                            }.frame(width: 8, height: (CGFloat(day.deaths) / CGFloat(self.vm.max)) * 150).background(Color.red)
+////
+////                                        }
+////                                    }
+////                                }
+////                            }
+//                        }
+//                        .frame(width: UIScreen.main.bounds.width, height: 200)
+//                        .background(Color.white)
+//                        .cornerRadius(8)
+//                        .clipped()
+//                        .shadow(radius: 4, x: 0, y: 4)
+//                    }
+//
+//                    // Credit
+//                    HStack {
+//                        Button("Credits", action: {
+//                            self.showingCredits.toggle()
+//                        })
+//                        .sheet(isPresented: self.$showingCredits) {
+//                                Credits()
+//                        }
+//
+//                        Spacer()
+//                    }
+//                    .padding(.horizontal)
+//
+//                }
+//            }
+//
+//            // Spacer
+//            Spacer()
+//
+//        }
+//        .frame(maxWidth: UIScreen.main.bounds.width)
+//        .edgesIgnoringSafeArea(.all)
+//        // I can't make it light
+//        .statusBar(hidden: true)
+//
+//    }
 
     
 }
