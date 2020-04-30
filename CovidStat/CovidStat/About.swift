@@ -43,18 +43,61 @@ struct About: View {
                 }
                 
                 // Symptoms
-//                HStack {
-//                    Spacer()
-//                    
-//                    Text("")
-//                    
-//                    Spacer()
-//                }
-//                .frame(height: 75)
-//                .background(Color.white)
-//                .cornerRadius(8)
-//                .clipped()
-//                .shadow(radius: 4, x: 0, y: 4)
+                HStack {
+                    
+                    // Headache
+                    VStack {
+                        Image("headache")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50)
+                        Text("Headache")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                    }
+                    .frame(width: UIScreen.main.bounds.width / 3.6, height: 85)
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .clipped()
+                    .shadow(radius: 4, x: 0, y: 4)
+                    
+                    Spacer()
+                    
+                    // Caugh
+                    VStack {
+                        Image("caugh")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50)
+                        Text("Caugh")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                    }
+                    .frame(width: UIScreen.main.bounds.width / 3.6, height: 85)
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .clipped()
+                    .shadow(radius: 4, x: 0, y: 4)
+                    
+                    Spacer()
+                    
+                    // Fever
+                    VStack {
+                        Image("fever")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50)
+                        Text("Fever")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                    }
+                    .frame(width: UIScreen.main.bounds.width / 3.6, height: 85)
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .clipped()
+                    .shadow(radius: 4, x: 0, y: 4)
+                    
+                }
                 
                 
             }.padding()
@@ -70,44 +113,74 @@ struct About: View {
                 }
                 
                 // Wear a mask
-                HStack {
-                    
-                    // Image
-                    Image("wear_mask")
+                ZStack {
                     
                     // Text
-                    VStack(alignment: .leading) {
-                        Text("Wear face mask")
-                        Text("Lorem")
+                    HStack {
+
+                        Spacer()
+                            .frame(width: 130)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Wear face mask")
+                                .fontWeight(.semibold)
+                            Text("Anyone caught without a mask risks becoming a social pariah.")
+                                .font(.footnote)
+                                .foregroundColor(Color.gray)
+                        }
+                        
+                        Spacer()
                     }
+                    .frame(height: 130)
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .clipped()
+                    .shadow(radius: 4, x: 0, y: 4)
                     
-                    Spacer()
+                    // Image
+                    HStack(alignment: .bottom) {
+                        Image("wear_mask")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 140)
+                        Spacer()
+                    }.offset(y: 10)
                 }
-                .frame(height: 130)
-                .background(Color.white)
-                .cornerRadius(8)
-                .clipped()
-                .shadow(radius: 4, x: 0, y: 4)
                 
                 // Wear a mask
-                HStack {
-                    
-                    // Image
-                    Image("wash_hands")
+                ZStack {
                     
                     // Text
-                    VStack(alignment: .leading) {
-                        Text("Wash your hands")
-                        Text("Lorem")
+                    HStack {
+
+                        Spacer()
+                            .frame(width: 130)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Wash your hands")
+                                .fontWeight(.semibold)
+                            Text("These diseases include gastrointestinal infections, such as Salmonella, and respiratory infections, such as influenza.")
+                                .font(.footnote)
+                                .foregroundColor(Color.gray)
+                        }
+                        
+                        Spacer()
                     }
+                    .frame(height: 130)
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .clipped()
+                    .shadow(radius: 4, x: 0, y: 4)
                     
-                    Spacer()
+                    // Image
+                    HStack(alignment: .bottom) {
+                        Image("wash_hands")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 140)
+                        Spacer()
+                    }.offset(y: 10)
                 }
-                .frame(height: 130)
-                .background(Color.white)
-                .cornerRadius(8)
-                .clipped()
-                .shadow(radius: 4, x: 0, y: 4)
                 
                 
             }.padding()
