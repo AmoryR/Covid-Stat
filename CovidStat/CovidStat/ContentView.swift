@@ -333,7 +333,7 @@ struct Place: Identifiable, Hashable {
 
 
 class SelectedPlace: ObservableObject {
-    @Published var place = Place(name: "Argentina")
+    @Published var place = Place(name: "France")
 }
 
 struct SelectionRow: View {
@@ -421,6 +421,7 @@ struct SelectButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: 50)
                     .stroke(Color.gray, lineWidth: 0.8)
             )
+            .background(Color.white)
 //            .foregroundColor(.blue)
     }
 }
@@ -440,6 +441,7 @@ struct ContentView: View {
     var body: some View {
         
         NavigationView {
+            
             VStack {
                 
                 // Header
@@ -449,7 +451,6 @@ struct ContentView: View {
                     Image("virus")
                         .resizable()
                         .scaledToFit()
-                        .offset(y: 10)
                     
                     // Dr
                     VStack {
@@ -457,34 +458,23 @@ struct ContentView: View {
                         Image("drcorona")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 150)
+                            .frame(width: 130)
                             .offset(x: -95)
                     }
+                        
                     
                     // Text
-                    VStack(alignment: .leading) {
-                        Text("Stay safe at home")
-                            .font(.title)
-                            .foregroundColor(Color.white)
-
-                        Button(action: {
-                            self.showingAbout.toggle()
-                        }) {
-                            Text("About Covid-19...")
-                                .foregroundColor(Color.orange)
-                        }
-                        .sheet(isPresented: self.$showingAbout) {
-                                About()
-                        }
-                    }
-                    .offset(x: 65)
+                    Text("Stay safe at home")
+                        .font(.title)
+                        .foregroundColor(Color.white)
+                        .offset(x: 70)
+                    
                 }
                 .frame(width: UIScreen.main.bounds.width, height: 200)
                 .background(LinearGradient(gradient: Gradient(colors: [
                     Color(red: 23/255, green: 74/255, blue: 136/255),
                     Color(red: 41/255, green: 116/255, blue: 201/255)]), startPoint: .leading, endPoint: .trailing)
                 )
-                
                 
                 ScrollView {
                     
@@ -654,11 +644,22 @@ struct ContentView: View {
                     // Credits
                     HStack {
                         
-                        Button("Credits", action: {
-                            self.showingCredits.toggle()
-                        })
-                        .sheet(isPresented: self.$showingCredits) {
-                                Credits()
+                        VStack(alignment: .leading) {
+                            Button(action: {
+                                self.showingAbout.toggle()
+                            }) {
+                                Text("About Covid-19")
+                            }
+                            .sheet(isPresented: self.$showingAbout) {
+                                    About()
+                            }.padding(.bottom, 15)
+                            
+                            Button("Credits", action: {
+                                self.showingCredits.toggle()
+                            })
+                            .sheet(isPresented: self.$showingCredits) {
+                                    Credits()
+                            }
                         }
 
                         Spacer()
