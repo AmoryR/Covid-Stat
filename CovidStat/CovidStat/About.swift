@@ -19,11 +19,25 @@ struct About: View {
                 
                 // Image
                 Image("virus")
+                    .resizable()
+                    .scaledToFit()
+                
+                // Dr
+                VStack {
+                    Spacer()
+                    Image("coronadr")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 150)
+                        .offset(x: -95)
+                }
+                    
                 
                 // Text
                 Text("About Covid-19")
                     .font(.title)
                     .foregroundColor(Color.white)
+                    .offset(x: 70)
                 
             }
             .frame(width: UIScreen.main.bounds.width, height: 200)
@@ -145,7 +159,7 @@ struct About: View {
                             .frame(width: 140)
                         Spacer()
                     }.offset(y: 10)
-                }
+                }.padding(.bottom, 10)
                 
                 // Wear a mask
                 ZStack {

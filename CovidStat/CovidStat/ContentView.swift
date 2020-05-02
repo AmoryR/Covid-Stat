@@ -338,7 +338,8 @@ class SelectedPlace: ObservableObject {
 
 struct SelectionRow: View {
     var place: Place
-
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var selectedPlace: SelectedPlace
 
     var isSelected : Bool {
@@ -350,6 +351,7 @@ struct SelectionRow: View {
 
         Button(action: {
             self.selectedPlace.place = self.place
+            self.presentationMode.wrappedValue.dismiss()
         }) {
             HStack {
                 Text(self.place.name)
@@ -409,6 +411,20 @@ struct SelectionView: View {
     
 }
 
+struct SelectButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.vertical, 10)
+            .padding(.horizontal, 20)
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .overlay(
+                RoundedRectangle(cornerRadius: 50)
+                    .stroke(Color.gray, lineWidth: 0.8)
+            )
+//            .foregroundColor(.blue)
+    }
+}
+
 struct ContentView: View {
     
     @ObservedObject var selectedPlace = SelectedPlace()
@@ -431,6 +447,19 @@ struct ContentView: View {
                     
                     // Image
                     Image("virus")
+                        .resizable()
+                        .scaledToFit()
+                        .offset(y: 10)
+                    
+                    // Dr
+                    VStack {
+                        Spacer()
+                        Image("drcorona")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 150)
+                            .offset(x: -95)
+                    }
                     
                     // Text
                     VStack(alignment: .leading) {
@@ -441,12 +470,14 @@ struct ContentView: View {
                         Button(action: {
                             self.showingAbout.toggle()
                         }) {
-                            Text("About Covid-19")
+                            Text("About Covid-19...")
+                                .foregroundColor(Color.orange)
                         }
                         .sheet(isPresented: self.$showingAbout) {
                                 About()
                         }
                     }
+                    .offset(x: 65)
                 }
                 .frame(width: UIScreen.main.bounds.width, height: 200)
                 .background(LinearGradient(gradient: Gradient(colors: [
@@ -465,17 +496,37 @@ struct ContentView: View {
                             Text("Select a place")
                                 .fontWeight(.bold)
                             Spacer()
-                        }
+                        }.padding(.bottom, 10)
                         
                         // Selector
                         NavigationLink(destination: SelectionView().environmentObject(self.selectedPlace), isActive: self.$isSelectingPlace) { EmptyView() }
 
-                        Button(self.selectedPlace.place.name) {
+                        Button(action:  {
                             self.isSelectingPlace = true
+                        }) {
+                            HStack {
+                                Image("location")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20)
+                                    .padding(.trailing, 5)
+                                
+                                Text(self.selectedPlace.place.name)
+                                
+                                Spacer()
+                                
+                                Image("forward")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 10)
+                            }
                         }
+                        .buttonStyle(SelectButtonStyle())
                         
                         
-                    }.padding()
+                    }
+                    .padding(.top)
+                    .padding(.horizontal)
                     
                     // Case update
                     VStack {
@@ -490,7 +541,7 @@ struct ContentView: View {
                                     .foregroundColor(Color.gray)
                             }
                             Spacer()
-                        }
+                        }.padding(.bottom, 10)
                         
                         // Case digits
                         HStack {
